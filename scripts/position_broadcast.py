@@ -5,6 +5,9 @@ import rospy
 from geometry_msgs.msg import PoseStamped
 from gazebo_msgs.msg import ModelStates
 from std_msgs.msg import Header
+import numpy as np
+import tf
+from geometry_msgs.msg import Quaternion
 
 pub = rospy.Publisher('mavros/vision_pose/pose', PoseStamped, queue_size=1)
 
@@ -21,13 +24,14 @@ def gazeboCallBack(data, model_name):
 
     if i % 5 == 0:
 
+        # r - imu frame (FLU)
+        # b - px4 body frame (FRD)
+        # g - gazebo ENU frame
         pose = data.pose[data.name.index(model_name)]
-
-        temp = pose.position.x
-        pose.position.x = -pose.position.y
-
-        pose.position.y = temp
-	pose.position.z = pose.position.z
+        q_gr = np.array([pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w])
+        q_br = np.array([1, 0, 0, 0])
+        q_gb = tf.transformations.quaternion_multiply(q_gr, tf.transformations.quaternion_conjugate(q_br))
+        pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w = q_gb
 
         header = Header()
 
