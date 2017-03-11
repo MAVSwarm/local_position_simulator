@@ -24,14 +24,16 @@ def gazeboCallBack(data, model_name):
 
     if i % 5 == 0:
 
+        pose = data.pose[data.name.index(model_name)]
+	
+	# mavros_extras 0.18.7 has included the transform bellow
         # r - imu frame (FLU)
         # b - px4 body frame (FRD)
         # g - gazebo ENU frame
-        pose = data.pose[data.name.index(model_name)]
-        q_gr = np.array([pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w])
-        q_br = np.array([1, 0, 0, 0])
-        q_gb = tf.transformations.quaternion_multiply(q_gr, tf.transformations.quaternion_conjugate(q_br))
-        pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w = q_gb
+        #q_gr = np.array([pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w])
+        #q_br = np.array([1, 0, 0, 0])
+        #q_gb = tf.transformations.quaternion_multiply(q_gr, tf.transformations.quaternion_conjugate(q_br))
+        #pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w = q_gb
 
         header = Header()
 
