@@ -45,7 +45,7 @@ def gazeboCallBack(data, model_name):
 
 
 def positionBroadcast():
-    rospy.init_node('position_broadcast', anonymous=False)
+    rospy.init_node('LPS', anonymous=False)
 
     while not rospy.has_param('~model_name'):
         pass

@@ -1,5 +1,5 @@
 <launch>
-<node name="simulated_position" pkg="simulated_local_position" type="position_broadcast.py">
+<node name="LPS" pkg="local_position_simulator" type="position_broadcast.py">
     <param name="model_name" value="iris" />
     <remap from="/gazebo/model_states" to="gazebo/model_states" />
 </node>
